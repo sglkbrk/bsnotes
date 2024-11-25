@@ -4,6 +4,7 @@ import { uploadFile, deleteFile } from '../../services/FileService';
 import { ContentUpdate } from '../../services/ContentService';
 import { Content } from '../../interface/Content';
 import Spinner from '../Spinner';
+import config from '../../config';
 
 // file dosyası tipi
 interface File {
@@ -58,7 +59,7 @@ const NoteWithVideo = ({ item, editable }: { item: Content; editable: boolean })
   useEffect(() => {
     if (item && item.contentValue) {
       var [name, url] = item.contentValue.split('&');
-      url = 'http://localhost:5262/api/File/download/' + url;
+      url = config.apiUrl + 'File/download/' + url;
       setAudioInstance(new Audio(url));
       setFile({ name, url });
     }

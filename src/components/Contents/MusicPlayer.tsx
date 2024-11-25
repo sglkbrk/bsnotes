@@ -4,6 +4,7 @@ import { uploadFile, deleteFile } from '../../services/FileService';
 import { ContentUpdate } from '../../services/ContentService';
 import { Content } from '../../interface/Content';
 import Spinner from '../Spinner';
+import config from '../../config';
 
 // Müzik dosyası tipi
 interface Music {
@@ -63,7 +64,7 @@ const MusicPlayer = ({ item, editable }: { item: Content; editable: boolean }) =
     if (item && item.contentValue) {
       const [name, url] = item.contentValue.split('&');
       setMusic({ name, url });
-      setAudioInstance(new Audio('http://localhost:5262/api/File/download/' + url));
+      setAudioInstance(new Audio(config + 'File/download/' + url));
     }
   }, [item]);
 

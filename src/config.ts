@@ -6,7 +6,7 @@ const config = {
     apiUrl: 'http://localhost:5262/api/'
   },
   production: {
-    apiUrl: 'http://localhost:5262/api/'
+    apiUrl: '/api/'
   }
 };
 
