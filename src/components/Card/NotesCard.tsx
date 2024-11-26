@@ -91,7 +91,7 @@ const NotesCard = ({
               onChange={(e) => setTagText(e.target.value)}
               onKeyDown={handleAddTag}
               placeholder="Add tags..."
-              className="w-full border-0w-full text-xs bg-transparent focus:outline-none cursor-text px-2 placeholder:text-zinc-600 "
+              className="w-full border-0 w-full text-xs bg-transparent focus:outline-none cursor-text px-2 placeholder:text-zinc-600 "
               style={{ flex: 1 }}
             />
           )}
@@ -125,7 +125,6 @@ const NotesCard = ({
           placeholder="location..."
           style={{ resize: 'none' }}
         />
-
         {item.share && item.share.length > 0 && (
           <div className="relative w-full h-8 flex justify-end">
             {item.share?.map((item) => (

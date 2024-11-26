@@ -136,7 +136,7 @@ const Notes = ({ WorkplaceId, onItemSelect }: { WorkplaceId: number | null; onIt
           ))}
         </div>
       </div>
-      <AddNotes isOpen={isPopupOpen} WorkplaceId={WorkplaceId} onClose={() => setIsPopupOpen(false)} onSave={handleSave} />
+      {/* <AddNotes isOpen={isPopupOpen} WorkplaceId={WorkplaceId} onClose={() => setIsPopupOpen(false)} onSave={handleSave} /> */}
     </div>
   );
 };

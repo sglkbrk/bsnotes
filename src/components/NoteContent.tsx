@@ -216,7 +216,7 @@ const NoteContent = ({ noteId }: { noteId: number }) => {
           ))}
         </div>
       </div>
-      {noteId && (
+      {noteId > 0 && (
         <div className="absolute w-0 right-0 bottom-8 hidden px-10 lg:block">
           <div className="flex justify-end space-x-4 px-4 py-2  text-sm font-bold rounded-lg">
             <FloatingActionButtonGroup icon={<FiPlus className="text-xl" />} setSelectedItem={floatingSelect} />

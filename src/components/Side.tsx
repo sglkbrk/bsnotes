@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FiTrash, FiDownload, FiFile, FiEdit, FiPlusCircle } from 'react-icons/fi';
+import { FiTrash, FiDownload, FiFile, FiEdit, FiPlusCircle, FiUser } from 'react-icons/fi';
 import * as FiIcons from 'react-icons/fi';
 import MotionDiv from './Motion/MotionDiv';
 import MotionText from './Motion/MotionText';
@@ -8,14 +8,19 @@ import AddWorkSpace from './Popup/AddWorkSpace';
 import { WorkSpaceAdd, WorkSpaceDelete, WorkSpaceUpdate } from '../services/WorkSpaceService';
 import Spinner from './Spinner';
 import { useConfirmation } from '../Context/ConfirmationContext';
+import EditProfileModal from '../components/Popup/EditProfileModal';
+import { GetUserImage } from '../services/UserService';
+import config from '../config';
 
 const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: any; onItemSelect: (item: number) => void }) => {
   const { openModal } = useConfirmation();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen2, setIsPopupOpen2] = useState(false);
   const [selectedItem, setSelectedItem] = useState<workspace>({} as workspace);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
+  const [userImage, setUserImage] = useState<string>('');
   const handleSave = async (data: workspace, type: number) => {
     setIsLoading(true);
     if (type === 0) {
@@ -49,6 +54,13 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
     });
   };
   useEffect(() => {
+    getUserImage();
+  }, []);
+  const getUserImage = async (): Promise<any> => {
+    var image = await GetUserImage();
+    setUserImage(image);
+  };
+  useEffect(() => {
     if (items && items?.length) setActiveIndex(items[0].id || 0);
   }, [items]);
   const deneme = () => {
@@ -62,8 +74,14 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
           <p className="font-signature text-[50px]">
             <MotionText delayOffset={0}>Bs Notes </MotionText>
           </p>
-          <div className="w-10 h-10 rounded-full bg-gray-200">
-            <img alt="" src="https://picsum.photos/id/237/200/300" className="w-full h-full object-cover rounded-full" />
+          <div onClick={() => setIsPopupOpen2(true)} className="w-10 h-10 rounded-full bg-gray-200">
+            {userImage ? (
+              <img alt="" src={config.apiUrl + 'File/download/' + userImage} className="w-full h-full object-cover rounded-full" />
+            ) : (
+              <div className="w-full h-full object-cover rounded-full justify-center items-center flex">
+                <FiUser className="w-5 h-5 rounded-full" />
+              </div>
+            )}
           </div>
         </div>
         <div className="space-y-12 mt-2">
@@ -155,7 +173,7 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
           <span>New Page</span>
         </div>
       </div>
-
+      <EditProfileModal isOpen={isPopupOpen2} onClose={() => setIsPopupOpen2(false)} />
       <AddWorkSpace isOpen={isPopupOpen} selectedItem={selectedItem} onClose={() => setIsPopupOpen(false)} onSave={handleSave} />
     </div>
   );
