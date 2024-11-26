@@ -4,12 +4,11 @@
 
 ## 🌟 Features
 
-- **Rich Note Editor**: Includes syntax highlighting and formatting tools for a great writing experience.
 - **Modern UI**: Built with Tailwind CSS for responsive, clean, and customizable designs.
 - **Animations**: Smooth transitions and animations powered by Framer Motion.
 - **Search and Organize**: Easily search, tag, and organize notes.
 - **Authentication**: Secure login and user account management with .NET Identity.
-- **Cross-platform**: Fully optimized for mobile, tablet, and desktop screens.
+- **Cross-platform**: Fully optimized for tablet, and desktop screens.
 
 ---
 
