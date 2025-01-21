@@ -72,3 +72,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 Check out the live version of the project here:  
 [https://bsnote.buraksaglik.com/](https://bsnote.buraksaglik.com/)
+
+Demo account:
+Email: demouser@gmail.com
+Password: 123456
