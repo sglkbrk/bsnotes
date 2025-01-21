@@ -66,7 +66,7 @@ const NotesCard = ({
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        maxLength={25}
+        maxLength={100}
         onBlur={() => {
           if (item.title !== title) handleBlur();
         }} // Dışarı tıklanınca kaydet
@@ -99,7 +99,7 @@ const NotesCard = ({
       </div>
       <textarea
         rows={3}
-        maxLength={100}
+        maxLength={300}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         onBlur={() => {

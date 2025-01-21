@@ -76,6 +76,9 @@ const Login: React.FC = () => {
               Register
             </button>
           </p>
+          <p>
+            Demo account: <br /> Email: demouser@gmail.com <br /> Password: 123456
+          </p>
         </div>
       </div>
     </div>
