@@ -61,19 +61,9 @@ function Home() {
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [isPending, startTransition] = useTransition();
-
-  const deneme = () => {
-    startTransition(() => {
-      dispatch({ type: 'FETCH_ERROR', payload: 'dqwmfkoqfkopwef' });
-    });
-  };
   return (
     <div className="justify-center mx-auto px-4  xl:px-12  ">
       <div className="flex h-screen">
-        <h1>{isPending ? 'true' : 'false'}</h1>
-        <button onClick={deneme}>asd</button>
         <Side items={workSpace} setItem={setWorkSpace} onItemSelect={handleWorkSpaceSelected} />
         <Notes WorkplaceId={selectedWorkSpaceId} onItemSelect={handleNoteSelected} />
         <NoteContent noteId={selectedNoteId} />
