@@ -80,7 +80,12 @@ const NotesCard = ({
           {tags.map((tag, index) => (
             <div key={index} className="group flex items-center mr-2">
               <span className={`mr-2 text-xs line-clamp-1 ${item.id === selectedId ? ' text-white' : 'text-gray-400 '}`}>{tag}</span>
-              <FaTrashAlt className="cursor-pointer text-xs hidden group-hover:flex  " onClick={() => handleRemoveTag(tag)} />
+              {/* <FaTrashAlt className="cursor-pointer text-xs hidden group-hover:flex  " onClick={() => handleRemoveTag(tag)} /> */}
+              <FaTrashAlt
+                className="cursor-pointer text-xs hidden group-hover:flex"
+                onClick={() => handleRemoveTag(tag)}
+                {...({} as any)}
+              />
             </div>
           ))}
           {tags.length < 3 && (

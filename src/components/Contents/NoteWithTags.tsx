@@ -46,7 +46,12 @@ const NoteWithTags = ({ item, editable }: { item: Content; editable: boolean }) 
           {tags.map((tag, index) => (
             <div key={index} className="group flex items-center">
               <span className="px-3 py-1 rounded-full text-sm text-[#FDB460]">{tag}</span>
-              <FaTrashAlt className="cursor-pointer text-sm hidden group-hover:flex " onClick={() => handleRemoveTag(tag)} />
+              {/* <FaTrashAlt className="cursor-pointer text-sm hidden group-hover:flex " onClick={() => handleRemoveTag(tag)} /> */}
+              <FaTrashAlt
+                className="cursor-pointer text-xs hidden group-hover:flex"
+                onClick={() => handleRemoveTag(tag)}
+                {...({} as any)}
+              />
             </div>
           ))}
           {tags.length < 5 && (
