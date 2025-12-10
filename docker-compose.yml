@@ -6,6 +6,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
     ports:
-      - '3002:3002'
-    restart: always
+      - '127.0.0.1:3002:3002'
+
+    restart: unless-stopped
+
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    user: '1000:1000'
