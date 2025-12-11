@@ -3,6 +3,8 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { ContentUpdate } from '../../services/ContentService';
 import { Content } from '../../interface/Content';
 
+const Trash = FaTrashAlt as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
+
 const NoteWithTags = ({ item, editable }: { item: Content; editable: boolean }) => {
   const [tags, setTags] = useState<string[]>([]); // Etiketleri saklayacak state
   const [inputValue, setInputValue] = useState<string>(''); // Kullanıcının inputtaki değeri
@@ -47,11 +49,7 @@ const NoteWithTags = ({ item, editable }: { item: Content; editable: boolean }) 
             <div key={index} className="group flex items-center">
               <span className="px-3 py-1 rounded-full text-sm text-[#FDB460]">{tag}</span>
               {/* <FaTrashAlt className="cursor-pointer text-sm hidden group-hover:flex " onClick={() => handleRemoveTag(tag)} /> */}
-              <FaTrashAlt
-                className="cursor-pointer text-xs hidden group-hover:flex"
-                onClick={() => handleRemoveTag(tag)}
-                {...({} as any)}
-              />
+              <Trash className="cursor-pointer text-xs hidden group-hover:flex" onClick={() => handleRemoveTag(tag)} {...({} as any)} />
             </div>
           ))}
           {tags.length < 5 && (

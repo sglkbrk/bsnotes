@@ -8,7 +8,7 @@ interface NoteProps extends Note {
   active?: boolean | null;
   share?: { userid: number; username: string; userimage: string }[] | null;
 }
-
+const Trash = FaTrashAlt as unknown as React.FC<React.SVGProps<SVGSVGElement>>;
 const NotesCard = ({
   item,
   selectedId,
@@ -81,11 +81,7 @@ const NotesCard = ({
             <div key={index} className="group flex items-center mr-2">
               <span className={`mr-2 text-xs line-clamp-1 ${item.id === selectedId ? ' text-white' : 'text-gray-400 '}`}>{tag}</span>
               {/* <FaTrashAlt className="cursor-pointer text-xs hidden group-hover:flex  " onClick={() => handleRemoveTag(tag)} /> */}
-              <FaTrashAlt
-                className="cursor-pointer text-xs hidden group-hover:flex"
-                onClick={() => handleRemoveTag(tag)}
-                {...({} as any)}
-              />
+              <Trash className="cursor-pointer text-xs hidden group-hover:flex" onClick={() => handleRemoveTag(tag)} {...({} as any)} />
             </div>
           ))}
           {tags.length < 3 && (

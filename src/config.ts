@@ -3,10 +3,10 @@ const config = {
     apiUrl: 'https://bsnote.buraksaglik.com/api/'
   },
   test: {
-    apiUrl: 'http://localhost:5262/api/'
+    apiUrl: 'https://bsnote.buraksaglik.com/api/'
   },
   production: {
-    apiUrl: '/api/'
+    apiUrl: 'https://bsnote.buraksaglik.com/api/'
   }
 };
 
