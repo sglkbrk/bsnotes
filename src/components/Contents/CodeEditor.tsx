@@ -1,7 +1,7 @@
 import { highlight, languages } from 'prismjs';
 import React, { useState, useEffect } from 'react';
 import Editor from 'react-simple-code-editor';
-import { FaCode, FaAngleUp, FaAngleDown } from 'react-icons/fa';
+import { FaCode } from 'react-icons/fa';
 import '../../assets/css/prism-tomorrow.css';
 import { ContentUpdate } from '../../services/ContentService';
 import { Content } from '../../interface/Content';
