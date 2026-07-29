@@ -18,3 +18,10 @@ services:
     cap_drop:
       - ALL
     user: '1000:1000'
+
+    networks:
+      - npm-network   
+
+networks:
+  npm-network:
+    external: true   
