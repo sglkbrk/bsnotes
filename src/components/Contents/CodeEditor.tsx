@@ -6,6 +6,8 @@ import '../../assets/css/prism-tomorrow.css';
 import { ContentUpdate } from '../../services/ContentService';
 import { Content } from '../../interface/Content';
 
+const FaCodeIcon = FaCode as React.ElementType;
+
 const CodeNote = ({ item, editable }: { item: Content; editable: boolean }) => {
   const [code, setCode] = useState('// Write your code here');
   useEffect(() => {
@@ -22,7 +24,7 @@ const CodeNote = ({ item, editable }: { item: Content; editable: boolean }) => {
   return (
     <div className="group flex items-center justify-center ">
       <p className="font-semibold text-gray-200 uppercase min-w-12">
-        <FaCode />
+        <FaCodeIcon />
       </p>
       <Editor
         disabled={editable}

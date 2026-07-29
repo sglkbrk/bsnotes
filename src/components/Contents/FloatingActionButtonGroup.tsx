@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { FaList, FaFolder, FaMusic, FaImage, FaCode, FaLink, FaVideo } from 'react-icons/fa';
 
+const FaMusicIcon = FaMusic as React.ElementType;
+const FaImageIcon = FaImage as React.ElementType;
+const FaCodeIcon = FaCode as React.ElementType;
+const FaLinkIcon = FaLink as React.ElementType;
+const FaVideoIcon = FaVideo as React.ElementType;
+const FaFolderIcon = FaFolder as React.ElementType;
+const FaListIcon = FaList as React.ElementType;
+
 const FloatingActionButtonGroup = ({
   text,
   icon,
@@ -21,19 +29,19 @@ const FloatingActionButtonGroup = ({
               onClick={() => setSelectedItem('Music')}
               className="flex items-center justify-center bg-gray-300 hover:bg-gray-400 w-10 h-10 rounded-full shadow-lg cursor-pointer transition-al"
             >
-              <FaMusic />
+              <FaMusicIcon />
             </div>
             <div
               onClick={() => setSelectedItem('File')}
               className="flex items-center justify-center bg-gray-300 hover:bg-gray-400 w-10 h-10 rounded-full shadow-lg cursor-pointer transition-al"
             >
-              <FaFolder />
+              <FaFolderIcon />
             </div>
             <div
               onClick={() => setSelectedItem('Todo')}
               className="flex items-center justify-center bg-gray-300 hover:bg-gray-400 w-10 h-10 rounded-full shadow-lg cursor-pointer transition-al"
             >
-              <FaList />
+              <FaListIcon />
             </div>
             <div
               onClick={() => setSelectedItem('Tags')}
@@ -45,26 +53,26 @@ const FloatingActionButtonGroup = ({
               onClick={() => setSelectedItem('Image')}
               className="flex items-center justify-center bg-gray-300 hover:bg-gray-400 w-10 h-10 rounded-full shadow-lg cursor-pointer transition-al"
             >
-              <FaImage />
+              <FaImageIcon />
             </div>
             <div
               onClick={() => setSelectedItem('Video')}
               className="flex items-center justify-center bg-gray-300 hover:bg-gray-400 w-10 h-10 rounded-full shadow-lg cursor-pointer transition-al"
             >
-              <FaVideo />
+              <FaVideoIcon />
             </div>
             <div
               data-tooltip-content="Tooltip içerik buraya!"
               onClick={() => setSelectedItem('Code')}
               className="flex items-center justify-center bg-gray-300 hover:bg-gray-400 w-10 h-10 rounded-full shadow-lg cursor-pointer transition-al"
             >
-              <FaCode />
+              <FaCodeIcon />
             </div>
             <div
               onClick={() => setSelectedItem('Link')}
               className="flex items-center justify-center bg-gray-300 hover:bg-gray-400 w-10 h-10 rounded-full shadow-lg cursor-pointer transition-al"
             >
-              <FaLink />
+              <FaLinkIcon />
             </div>
           </div>
         )}

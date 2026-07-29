@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlay, FaPause, FaMusic, FaPlus, FaAngleUp, FaAngleDown, FaTrash } from 'react-icons/fa';
+import { FaPlay, FaPause, FaMusic, FaPlus, FaTrash } from 'react-icons/fa';
 import { uploadFile, deleteFile } from '../../services/FileService';
 import { ContentUpdate } from '../../services/ContentService';
 import { Content } from '../../interface/Content';
@@ -67,11 +67,11 @@ const MusicPlayer = ({ item, editable }: { item: Content; editable: boolean }) =
       setAudioInstance(new Audio(config + 'File/download/' + url));
     }
   }, [item]);
-
+  const FaMusicIcon = FaMusic as React.ElementType;
   return (
     <div className="group flex items-center justify-center ">
       <p className="font-semibold text-gray-200 uppercase min-w-12">
-        <FaMusic />
+        <FaMusicIcon />
       </p>
       <div className="flex flex-row w-full items-center justify-center p-2 mx-auto space-y-4 bg-gray-100 rounded-lg shadow-md">
         {music && (
