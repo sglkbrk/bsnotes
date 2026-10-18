@@ -35,5 +35,5 @@ services:
       - app-network
 
 networks:
-  npm-network:
+  app-network:
     external: true
