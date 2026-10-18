@@ -17,7 +17,7 @@ services:
     volumes:
       - ./backend/uploads:/app/uploads
     networks:
-      - npm-network
+      - app-network
 
   frontend:
     container_name: bsnotes-frontend
@@ -32,7 +32,7 @@ services:
     depends_on:
       - backend
     networks:
-      - npm-network
+      - app-network
 
 networks:
   npm-network:
