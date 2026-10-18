@@ -59,11 +59,16 @@ const AddWorkSpace = ({ isOpen, onClose, onSave, selectedItem }: AddWorkSpacePro
               className="w-full border px-4 py-2 rounded-md flex items-center justify-between cursor-pointer"
               onClick={() => setIsDropdownOpen((prev) => !prev)}
             >
-              {icon ? (
+              {icon && FiIcons[icon as keyof typeof FiIcons] ? (
                 <>
                   {React.createElement(FiIcons[icon as keyof typeof FiIcons], {
                     size: 24
                   })}
+                  <span className="ml-2">{icon}</span>
+                </>
+              ) : icon ? (
+                <>
+                  <span className="text-xl">{icon}</span>
                   <span className="ml-2">{icon}</span>
                 </>
               ) : (

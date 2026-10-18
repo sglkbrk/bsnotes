@@ -24,7 +24,7 @@
     "react-tooltip": "^5.28.0",
     "tailwind-merge": "^2.5.4",
     "tailwind-variants": "^0.3.0",
-    "typescript": "^4.9.5",
+    "typescript": "^5.9.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

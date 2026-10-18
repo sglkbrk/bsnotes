@@ -5,6 +5,9 @@ import MotionDiv from './Motion/MotionDiv';
 import MotionText from './Motion/MotionText';
 import { workspace } from '../interface/workspace';
 import AddWorkSpace from './Popup/AddWorkSpace';
+import TemplateModal from './Popup/TemplateModal';
+import ImportModal from './Popup/ImportModal';
+import TrashModal from './Popup/TrashModal';
 import { WorkSpaceAdd, WorkSpaceDelete, WorkSpaceUpdate } from '../services/WorkSpaceService';
 import Spinner from './Spinner';
 import { useConfirmation } from '../Context/ConfirmationContext';
@@ -12,10 +15,21 @@ import EditProfileModal from '../components/Popup/EditProfileModal';
 import { GetUserImage } from '../services/UserService';
 import config from '../config';
 
-const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: any; onItemSelect: (item: number) => void }) => {
+interface SideProps {
+  items: workspace[];
+  setItem: any;
+  onItemSelect: (item: number) => void;
+  onNoteCreated?: (newNote: any) => void;
+  onRefreshWorkspaces?: () => void;
+}
+
+const Side = ({ items, setItem, onItemSelect, onNoteCreated, onRefreshWorkspaces }: SideProps) => {
   const { openModal } = useConfirmation();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupOpen2, setIsPopupOpen2] = useState(false);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isTrashModalOpen, setIsTrashModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<workspace>({} as workspace);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,10 +38,10 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
   const handleSave = async (data: workspace, type: number) => {
     setIsLoading(true);
     if (type === 0) {
-      var item = await WorkSpaceAdd(data);
-      items.push(item);
+      const addedItem = await WorkSpaceAdd(data);
+      items.push(addedItem);
     } else {
-      var item = await WorkSpaceUpdate(data);
+      const updatedItem = await WorkSpaceUpdate(data);
       setItem(items);
       items[items.findIndex((x: any) => x.id === data.id)] = data;
     }
@@ -63,9 +77,6 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
   useEffect(() => {
     if (items && items?.length) setActiveIndex(items[0].id || 0);
   }, [items]);
-  const deneme = () => {
-    alert('Çok Yakında Geliştirilecektir');
-  };
   return (
     <div className="hidden sm:flex  w-full sm:w-1/12 sm:min-w-[300px] pr-0   flex-col h-screen">
       {/* Üst Kısım */}
@@ -88,19 +99,19 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
           <div>
             <ul className="flex flex-col items-start space-y-5 tracking-wider text-[16px] text-black text-sm">
               <MotionDiv delayOffset={0.2}>
-                <li onClick={deneme} className="flex items-center space-x-4 cursor-pointer ">
+                <li onClick={() => setIsTemplateModalOpen(true)} className="flex items-center space-x-4 cursor-pointer hover:text-[#FDB460] transition">
                   <FiFile className="text-xl" />
                   <p className="font-serif ">Templates</p>
                 </li>
               </MotionDiv>
               <MotionDiv delayOffset={0.4}>
-                <li onClick={deneme} className="flex items-center space-x-4 cursor-pointer ">
+                <li onClick={() => setIsImportModalOpen(true)} className="flex items-center space-x-4 cursor-pointer hover:text-blue-500 transition">
                   <FiDownload className="text-xl" />
                   <p className="font-serif">Import</p>
                 </li>
               </MotionDiv>
               <MotionDiv delayOffset={0.6}>
-                <li onClick={deneme} className="flex items-center space-x-4 cursor-pointer ">
+                <li onClick={() => setIsTrashModalOpen(true)} className="flex items-center space-x-4 cursor-pointer hover:text-red-500 transition">
                   <FiTrash className="text-xl" />
                   <p className="font-serif">Trash</p>
                 </li>
@@ -133,7 +144,9 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
             <ul className="flex flex-col items-start space-y-5 tracking-wider text-[15px] text-black text-sm mt-8">
               {items &&
                 items.map((item: workspace, index: number) => {
-                  const IconComponent = FiIcons[item.icon as keyof typeof FiIcons];
+                  const IconComponent = (item.icon && FiIcons[item.icon as keyof typeof FiIcons]) as
+                    | React.ComponentType<{ className?: string }>
+                    | undefined;
                   return (
                     <MotionDiv key={item.id} delayOffset={0.2 + index * 0.05}>
                       <div className="flex items-center">
@@ -141,8 +154,14 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
                           <input type="checkbox" className="checkbox-WorkspaceItem mr-4 " value={item.id} id={`checkbox-${item.id}`} />
                         )}
                         <li key={item.id} className="group flex w-full items-center justify-between">
-                          <div onClick={() => ItemSelect(item.id as number)} className="flex    items-center space-x-4 cursor-pointer">
-                            <IconComponent className="text-xl" />
+                          <div onClick={() => ItemSelect(item.id as number)} className="flex items-center space-x-4 cursor-pointer">
+                            {IconComponent ? (
+                              <IconComponent className="text-xl" />
+                            ) : item.icon && item.icon.length <= 4 ? (
+                              <span className="text-xl leading-none">{item.icon}</span>
+                            ) : (
+                              <FiIcons.FiFolder className="text-xl" />
+                            )}
                             <p className={` ${activeIndex === item.id ? 'text-black' : 'text-gray-400 '}`}>{item.name}</p>
                           </div>
                           {/* Ayar ikonu sağa yaslanmış */}
@@ -175,6 +194,26 @@ const Side = ({ items, setItem, onItemSelect }: { items: workspace[]; setItem: a
       </div>
       <EditProfileModal isOpen={isPopupOpen2} onClose={() => setIsPopupOpen2(false)} />
       <AddWorkSpace isOpen={isPopupOpen} selectedItem={selectedItem} onClose={() => setIsPopupOpen(false)} onSave={handleSave} />
+      <TemplateModal
+        isOpen={isTemplateModalOpen}
+        onClose={() => setIsTemplateModalOpen(false)}
+        workspaces={items}
+        currentWorkspaceId={activeIndex}
+        onTemplateApplied={(newNote) => onNoteCreated && onNoteCreated(newNote)}
+      />
+      <ImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        workspaces={items}
+        currentWorkspaceId={activeIndex}
+        onNoteImported={(newNote) => onNoteCreated && onNoteCreated(newNote)}
+      />
+      <TrashModal
+        isOpen={isTrashModalOpen}
+        onClose={() => setIsTrashModalOpen(false)}
+        workspaces={items}
+        onItemRestored={() => onRefreshWorkspaces && onRefreshWorkspaces()}
+      />
     </div>
   );
 };

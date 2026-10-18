@@ -1,78 +1,130 @@
-# BSNote - Advanced Note-Taking Application ✍️
+# BSNote - Modern Not Defteri Uygulaması ✍️
 
-**BSNote** is a powerful and user-friendly note-taking application developed using modern technologies to provide a seamless and feature-rich experience for users. It’s designed with scalability and performance in mind, combining React.js for the frontend and .NET 8 for the backend.
+**BSNote**, modern web teknolojileri ile geliştirilmiş, zengin içerik tiplerini (metin, kod, yapılacaklar listesi, video, müzik, görsel, dosya, etiketler) destekleyen kapsamlı bir not alma uygulamasıdır.
 
-## 🌟 Features
-
-- **Modern UI**: Built with Tailwind CSS for responsive, clean, and customizable designs.
-- **Animations**: Smooth transitions and animations powered by Framer Motion.
-- **Search and Organize**: Easily search, tag, and organize notes.
-- **Authentication**: Secure login and user account management with .NET Identity.
-- **Cross-platform**: Fully optimized for tablet, and desktop screens.
+Bu proje, daha önce harici bir .NET servisi (`BsNotesServices`) olarak çalışan arka yüzü **Node.js + Express + Prisma (MySQL)** mimarisine taşıyarak; `frontend` ve `backend` servislerini tek bir monorepo yapısında birleştirmiştir.
 
 ---
 
-## 🛠 Technologies Used
+## 🏗 Mimari ve Proje Yapısı
+
+```
+bsnotes/
+├── frontend/                     # React (TypeScript + Tailwind CSS + Framer Motion)
+│   ├── src/                      # Ön yüz bileşenleri, sayfalar ve servisler
+│   ├── public/                   # Statik varlıklar
+│   ├── Dockerfile                # Nginx tabanlı üretim Docker imajı
+│   └── nginx.conf                # SPA yönlendirmeleri için Nginx ayarı
+├── backend/                      # Node.js (Express + TypeScript + Prisma)
+│   ├── src/                      # API endpoint'leri, servisler, middleware'ler
+│   ├── prisma/                   # MySQL şeması ve Prisma konfigürasyonu
+│   ├── uploads/                  # Yüklenen dosyalar
+│   └── Dockerfile                # Multi-stage Node.js üretim Docker imajı
+├── docker-compose.yml            # Frontend ve Backend orkestrasyonu
+├── .env.example                  # Çevre değişkenleri şablonu
+├── .env                          # Aktif çevre değişkenleri
+└── README.md
+```
+
+---
+
+## 🛠 Kullanılan Teknolojiler
 
 ### Frontend
-
-- **[React 18](https://reactjs.org/)**: A JavaScript library for building user interfaces.
-- **[React Router](https://reactrouter.com/)**: For routing and navigation.
-- **[Framer Motion](https://www.framer.com/motion/)**: For animations.
-- **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework.
-- **[Axios](https://axios-http.com/)**: For making API requests.
-- **[Prism.js](https://prismjs.com/)**: For syntax highlighting.
+- **React 19** & **TypeScript**
+- **Tailwind CSS** (Modern ve duyarlı arayüz)
+- **Framer Motion** (Animasyonlar ve geçişler)
+- **Axios** (REST API iletişimi)
+- **Prism.js** (Kod renklendirme)
 
 ### Backend
-
-- **[.NET 8](https://dotnet.microsoft.com/)**: For building robust and scalable APIs.
-- **[Entity Framework Core](https://learn.microsoft.com/en-us/ef/)**: For database management and operations.
-- **[MySQL](https://www.mysql.com/)**: For data storage.
-
----
-
-## 📸 Screenshot
-
-![BSNote Screenshot](./screenshot.png)
+- **Node.js** & **Express**
+- **TypeScript**
+- **Prisma ORM** (Tip güvenli veritabanı yönetimi)
+- **MySQL 8.0**
+- **JWT** (JSON Web Token kimlik doğrulama)
+- **Multer** (Dosya yükleme yönetimi)
+- **Crypto MD5** (.NET ile tam uyumlu parola doğrulaması)
 
 ---
 
-## 🛠 Installation and Setup
+## 🚀 Hızlı Başlangıç (Docker Compose)
 
-Follow these steps to set up the project locally:
+### 1. Ortam Değişkenlerini Ayarlayın
+Kök dizindeki `.env.example` dosyasını `.env` olarak kopyalayın ve veritabanı bilgilerinizi düzenleyin:
+```bash
+cp .env.example .env
+```
 
-## Available Scripts
+`.env` içeriği örneği:
+```env
+FRONTEND_PORT=3002
+BACKEND_PORT=5002
+REACT_APP_API_URL=https://bsnote.buraksaglik.com/api/
+DATABASE_URL="mysql://kullanici:sifre@localhost:3306/ProductManagementDb"
+JWT_KEY="GucluSecretKeyiniz123456!"
+JWT_ISSUER="BsNotesServices"
+JWT_AUDIENCE="BsNotesClient"
+```
 
-In the project directory, you can run:
+### 2. Docker Ağını Oluşturun (Gerekiyorsa)
+Eğer sunucunuzda Nginx Proxy Manager kullanıyorsanız ve ağ henüz yoksa:
+```bash
+docker network create npm-network
+```
 
-### `npm start`
+### 3. Uygulamayı Başlatın
+```bash
+docker compose up -d --build
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Frontend**: `http://localhost:3002`
+- **Backend API**: `http://localhost:5002/api`
+- **Sağlık Kontrolü**: `http://localhost:5002/api/health`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## 💻 Yerel Geliştirme (Local Development)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend:
+```bash
+cd backend
+npm install
+npx prisma generate
+# Veritabanı tablolarını eşitlemek için:
+# npx prisma db push
+npm run dev
+```
 
-### `npm run build`
+### Frontend:
+```bash
+cd frontend
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📡 API Endpoint Haritası
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-## 🌍 Live Demo
-
-Check out the live version of the project here:  
-[https://bsnote.buraksaglik.com/](https://bsnote.buraksaglik.com/)
-
-Demo account:
-Email: demouser@gmail.com
-Password: 123456
+| Metot | Endpoint | Yetki | Açıklama |
+|---|---|---|---|
+| `POST` | `/api/User/register` | Herkese Açık | Yeni kullanıcı kaydı |
+| `POST` | `/api/User/login` | Herkese Açık | Kullanıcı girişi ve token alma |
+| `GET` | `/api/User/users-async` | Bearer Token | Giriş yapan kullanıcının profil bilgileri |
+| `PUT` | `/api/User/update` | Bearer Token | Kullanıcı profili güncelleme |
+| `GET` | `/api/User/user-image` | Bearer Token | Kullanıcı profil görseli |
+| `GET` | `/api/Workplace` | Bearer Token | Aktif çalışma alanlarını listeleme |
+| `POST` | `/api/Workplace` | Bearer Token | Yeni çalışma alanı oluşturma |
+| `PUT` | `/api/Workplace/:id` | Bearer Token | Çalışma alanı güncelleme |
+| `POST` | `/api/Workplace/Delete` | Bearer Token | Çalışma alanlarını silme |
+| `GET` | `/api/Note/Workplace/:id` | Bearer Token | Çalışma alanına ait notları getirme |
+| `POST` | `/api/Note` | Bearer Token | Yeni not oluşturma |
+| `PUT` | `/api/Note/:id` | Bearer Token | Not güncelleme |
+| `POST` | `/api/Note/Delete` | Bearer Token | Notları ve alt içeriklerini silme |
+| `GET` | `/api/Content/Note/:noteId` | Bearer Token | Nota ait içerik bloklarını getirme |
+| `POST` | `/api/Content` | Bearer Token | İçerik bloğu ekleme |
+| `PUT` | `/api/Content/:id` | Bearer Token | İçerik bloğu güncelleme |
+| `POST` | `/api/Content/SortBy` | Bearer Token | Blok sıralamasını güncelleme |
+| `POST` | `/api/File/upload` | Bearer Token | Dosya/görsel yükleme |
+| `GET` | `/api/File/download/:key` | Herkese Açık | Dosya indirme / görüntüleme |

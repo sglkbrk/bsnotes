@@ -1,27 +1,39 @@
-version: '3.9'
-
 services:
-  bs-note:
-    container_name: bs-note
+  backend:
+    container_name: bsnotes-backend
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
-
-    ports:
-      - '127.0.0.1:3002:3002'
-
     restart: unless-stopped
-
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
-    user: '1000:1000'
-
+    ports:
+      - "${BACKEND_PORT:-5002}:5002"
+    environment:
+      - PORT=5002
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_KEY=${JWT_KEY}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_AUDIENCE=${JWT_AUDIENCE}
+    volumes:
+      - ./backend/uploads:/app/uploads
     networks:
-      - npm-network   
+      - npm-network
+
+  frontend:
+    container_name: bsnotes-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_URL=${REACT_APP_API_URL:-https://bsnote.buraksaglik.com/api/}
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3002}:3002"
+    depends_on:
+      - backend
+    networks:
+      - npm-network
 
 networks:
   npm-network:
-    external: true   
+    external: true

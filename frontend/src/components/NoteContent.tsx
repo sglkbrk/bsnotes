@@ -17,12 +17,33 @@ import {
 import { ContentDelete } from '../services/ContentService';
 import { useConfirmation } from '../Context/ConfirmationContext';
 import { ContentAdd, GetContents, SortBy } from '../services/ContentService';
+import { ExportNote } from '../services/NoteService';
 import { FloatingActionButtonGroup, FloatingActionText } from '../components/Contents';
 
 const NoteContent = ({ noteId }: { noteId: number }) => {
   const { openModal } = useConfirmation();
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
+
+  const handleExportNote = async () => {
+    if (!noteId) {
+      alert('Lütfen önce bir not seçiniz.');
+      return;
+    }
+    try {
+      const exportData = await ExportNote(noteId);
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      const safeTitle = (exportData.note?.title || 'not').replace(/[^a-zA-Z0-9_-]/g, '_');
+      downloadAnchor.setAttribute('href', dataStr);
+      downloadAnchor.setAttribute('download', `bsnote-${safeTitle}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } catch (err) {
+      alert('Not dışa aktarılırken bir hata oluştu.');
+    }
+  };
   const [shortByMode, setShortByMode] = useState<boolean>(false);
   const [contents, setContents] = useState<Content[]>([]);
   const GetContets = async (id: number) => {
@@ -104,7 +125,13 @@ const NoteContent = ({ noteId }: { noteId: number }) => {
         <div className="flex w-full h-28 justify-start items-center pr-8 sticky top-0 bg-white z-10">
           <div className="flex gap-10 items-center ml-2">
             {/* <FiMapPin className="text-[20px] text-gray-400 hover:text-black" /> */}
-            <FiDownload className="text-[20px] text-gray-400 hover:text-black" />
+            <button
+              onClick={handleExportNote}
+              title="Notu Dışa Aktar (JSON)"
+              className="p-1.5 rounded-lg hover:bg-gray-100 transition text-gray-400 hover:text-black"
+            >
+              <FiDownload className="text-[20px]" />
+            </button>
           </div>
           <div className="flex flex-1 justify-end gap-4 items-center">
             {deleteMode && (

@@ -35,3 +35,23 @@ export const NoteUpdate = async (item: Note): Promise<any> => {
     console.error(error);
   }
 };
+
+export const ExportNote = async (noteId: number): Promise<any> => {
+  try {
+    const response = await api.get('Note/export/' + noteId);
+    return response.data;
+  } catch (error: any) {
+    console.error('Failed to export note:', error);
+    throw error;
+  }
+};
+
+export const ImportNote = async (payload: { workplaceId: number; note: any }): Promise<any> => {
+  try {
+    const response = await api.post('Note/import', payload);
+    return response.data;
+  } catch (error: any) {
+    console.error('Failed to import note:', error);
+    throw error;
+  }
+};

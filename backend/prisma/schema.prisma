@@ -1,0 +1,97 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String    @map("Name") @db.LongText
+  surname   String    @map("Surname") @db.LongText
+  email     String    @map("Email") @db.LongText
+  password  String    @map("Password") @db.LongText
+  userImage String?   @map("UserImage") @db.LongText
+
+  workplaces        Workplace[]
+  notes             Note[]
+  contentsCreated   Content[]   @relation("ContentCreatedUser")
+  contentsUpdated   Content[]   @relation("ContentUpdatedUser")
+  shareNotesUser    ShareNote[] @relation("ShareNoteUser")
+  shareNotesCreated ShareNote[] @relation("ShareNoteCreatedUser")
+
+  @@map("Users")
+}
+
+model Workplace {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("UserId")
+  name        String   @map("Name") @db.LongText
+  icon        String   @map("Icon") @db.LongText
+  status      Int      @map("Status")
+  order       Int      @map("Order")
+  createdDate DateTime  @default(now()) @map("CreatedDate")
+  deletedDate DateTime? @map("DeletedDate")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notes Note[]
+
+  @@map("Workplaces")
+}
+
+model Note {
+  id          Int       @id @default(autoincrement())
+  workplaceId Int       @map("WorkplaceId")
+  title       String?   @map("Title") @db.LongText
+  description String?   @map("Description") @db.LongText
+  location    String?   @map("Location") @db.LongText
+  tags        String?   @map("Tags") @db.LongText
+  createdDate DateTime? @default(now()) @map("CreatedDate")
+  updatedDate DateTime? @default(now()) @map("UpdatedDate")
+  deletedDate DateTime? @map("DeletedDate")
+  status      Int       @default(0) @map("Status")
+  order       Int       @map("order")
+  userId      Int       @map("UserId")
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workplace  Workplace   @relation(fields: [workplaceId], references: [id], onDelete: Cascade)
+  contents   Content[]
+  shareNotes ShareNote[]
+
+  @@map("Notes")
+}
+
+model Content {
+  id            Int       @id @default(autoincrement())
+  noteId        Int       @map("NoteId")
+  contentType   Int       @map("ContentType")
+  contentValue  String    @map("ContentValue") @db.LongText
+  order         Int       @map("order")
+  createdDate   DateTime? @default(now()) @map("CreatedDate")
+  updatedDate   DateTime? @default(now()) @map("UpdatedDate")
+  createdUserId Int?      @map("CreatedUserId")
+  updatedUserId Int?      @map("UpdatedUserId")
+
+  note        Note  @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  createdUser User? @relation("ContentCreatedUser", fields: [createdUserId], references: [id], onDelete: Cascade)
+  updatedUser User? @relation("ContentUpdatedUser", fields: [updatedUserId], references: [id], onDelete: Cascade)
+
+  @@map("Contents")
+}
+
+model ShareNote {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("UserId")
+  noteId        Int      @map("NoteId")
+  createdDate   DateTime @default(now()) @map("CreatedDate")
+  createdUserId Int      @map("CreatedUserId")
+
+  user        User @relation("ShareNoteUser", fields: [userId], references: [id], onDelete: Cascade)
+  note        Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  createdUser User @relation("ShareNoteCreatedUser", fields: [createdUserId], references: [id], onDelete: Cascade)
+
+  @@map("ShareNotes")
+}
+
